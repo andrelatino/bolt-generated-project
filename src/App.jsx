@@ -1,7 +1,8 @@
+import { lazy, Suspense } from 'react'
 import { Header } from './components/Header'
 import { Sidebar } from './components/Sidebar'
-import { RevenueChart } from './components/charts/AreaChart'
-import { UsersChart } from './components/charts/BarChart'
+
+const Charts = lazy(() => import('./components/charts'))
 
 function App() {
   return (
@@ -34,16 +35,18 @@ function App() {
             </div>
           </div>
 
-          <div className="mt-8 grid gap-4 md:grid-cols-2">
-            <div className="rounded-lg border bg-card p-4">
-              <h3 className="text-lg font-medium mb-4">Revenue Over Time</h3>
-              <RevenueChart />
+          <Suspense fallback={<div className="mt-8">Loading charts...</div>}>
+            <div className="mt-8 grid gap-4 md:grid-cols-2">
+              <div className="rounded-lg border bg-card p-4">
+                <h3 className="text-lg font-medium mb-4">Revenue Over Time</h3>
+                <Charts.RevenueChart />
+              </div>
+              <div className="rounded-lg border bg-card p-4">
+                <h3 className="text-lg font-medium mb-4">Daily Active Users</h3>
+                <Charts.UsersChart />
+              </div>
             </div>
-            <div className="rounded-lg border bg-card p-4">
-              <h3 className="text-lg font-medium mb-4">Daily Active Users</h3>
-              <UsersChart />
-            </div>
-          </div>
+          </Suspense>
         </main>
       </div>
     </div>
